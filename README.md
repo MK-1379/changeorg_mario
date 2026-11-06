@@ -1,59 +1,148 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Change.org Mario – Plataforma de peticiones con Laravel
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Réplica de [Change.org](https://www.change.org) hecha con **Laravel 12** para el módulo de Desarrollo Web en Entorno Servidor (DWES) de 2º de DAW. Los usuarios pueden crear peticiones, clasificarlas por categorías y firmar las peticiones de otros.
 
-## About Laravel
+> **Proyecto en desarrollo.** La base de datos, los modelos y la API de usuarios y categorías ya funcionan. La parte web (vistas Blade) y la gestión completa de peticiones están en construcción. Consulta el [estado del proyecto](#estado-del-proyecto).
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Modelo de datos
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+| Relación | Modelos | Cómo se implementa |
+| --- | --- | --- |
+| Uno a muchos (1:N) | `User` – `Peticione` | Un usuario crea muchas peticiones. Clave foránea `user_id` en `peticiones` |
+| Uno a muchos (1:N) | `Categoria` – `Peticione` | Una categoría agrupa muchas peticiones. Clave foránea `categoria_id` en `peticiones` |
+| Muchos a muchos (N:M) | `User` – `Peticione` | Un usuario firma muchas peticiones y una petición tiene muchos firmantes. Tabla pivote `peticione_user` con clave primaria compuesta |
+| Uno a muchos (1:N) | `Peticione` – `File` | Una petición puede tener varios archivos. Se borran en cascada con la petición |
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+**¿Por qué `Peticione` y no `Peticion`?** Laravel deduce el nombre de la tabla poniendo el modelo en plural inglés (añadiendo una `s`). Con `Peticion` buscaría la tabla `peticions`; con `Peticione` busca `peticiones`, que es la tabla real. Lo mismo ocurre con la clave foránea (`peticione_id`) y la tabla pivote (`peticione_user`).
 
-## Learning Laravel
+## Tecnologías
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+- PHP 8.2+
+- Laravel 12
+- MySQL / MariaDB (XAMPP)
+- Laravel Sanctum
+- Bootstrap 5 (vistas públicas)
+- Insomnia / Postman para probar la API
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Instalación
 
-## Laravel Sponsors
+```bash
+git clone https://github.com/MK-1379/changeorg_mario.git
+cd changeorg_mario
+composer install
+cp .env.example .env
+php artisan key:generate
+```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+Configura la base de datos en el `.env` (ajusta el puerto si tu MySQL no usa el 3306):
 
-### Premium Partners
+```env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=laravel_change_mario
+DB_USERNAME=root
+DB_PASSWORD=
+```
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+Crea la base de datos vacía `laravel_change_mario` y ejecuta:
 
-## Contributing
+```bash
+php artisan migrate
+php artisan serve
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+La aplicación queda disponible en `http://localhost:8000` y la API en `http://localhost:8000/api`.
 
-## Code of Conduct
+## API
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Todas las peticiones deben llevar la cabecera `Accept: application/json`.
 
-## Security Vulnerabilities
+### Usuarios
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+| Método | Ruta | Descripción |
+| --- | --- | --- |
+| POST | `/api/register` | Registra un usuario (`name`, `email`, `password`, `c_password`) |
+| GET | `/api/users` | Lista todos los usuarios |
+| GET | `/api/user/{user}` | Muestra un usuario |
 
-## License
+### Categorías
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+| Método | Ruta | Descripción |
+| --- | --- | --- |
+| POST | `/api/categoria` | Crea una categoría (`nombre`, único) |
+| GET | `/api/categorias` | Lista todas las categorías |
+| GET | `/api/categoria/{categoria}` | Muestra una categoría |
+
+Si la validación falla, la API responde `422` con los errores de cada campo. Si el recurso no existe, responde `404`.
+
+### Ejemplo
+
+```http
+POST /api/register
+Content-Type: application/json
+Accept: application/json
+
+{
+    "name": "Mario",
+    "email": "mario@test.com",
+    "password": "123456",
+    "c_password": "123456"
+}
+```
+
+La contraseña se guarda cifrada con `Hash::make` y nunca aparece en las respuestas.
+
+## Rutas web (en desarrollo)
+
+Definidas en `routes/web.php`:
+
+| Ruta | Nombre | Descripción |
+| --- | --- | --- |
+| `/` | `home` | Página de inicio |
+| `/peticiones/index` | `peticiones.index` | Listado de peticiones |
+| `/peticiones/{id}` | `peticiones.show` | Detalle de una petición |
+| `/peticion/add` | `peticiones.create` | Formulario para crear una petición |
+| `/mispeticiones` | `peticiones.mine` | Peticiones del usuario autenticado |
+| `/peticionesfirmadas` | `peticiones.peticionesfirmadas` | Peticiones firmadas por el usuario |
+| `/peticiones/firmar/{id}` | `peticiones.firmar` | Firmar una petición |
+
+## Estado del proyecto
+
+- [x] Migraciones: `peticiones`, `categorias`, `peticione_user`, `files`
+- [x] Modelos con sus relaciones: `User`, `Peticione`, `Categoria`, `File`
+- [x] API de usuarios: registro, listado y detalle
+- [x] API de categorías: creación, listado y detalle
+- [x] Rutas web definidas
+- [ ] Layout público y página de inicio con Bootstrap
+- [ ] Listado de peticiones (`index.blade.php`)
+- [ ] Crear, editar, borrar y firmar peticiones
+- [ ] Autenticación (login y registro web)
+- [ ] Subida de archivos
+
+## Estructura principal
+
+```
+app/
+├── Http/Controllers/
+│   ├── CategoriaController.php
+│   ├── FileController.php
+│   ├── PagesController.php
+│   ├── PeticioneController.php
+│   └── UserController.php
+└── Models/
+    ├── Categoria.php
+    ├── File.php
+    ├── Peticione.php
+    └── User.php
+database/migrations/
+resources/views/
+routes/
+├── api.php
+└── web.php
+```
+
+## Autor
+
+Mario Díaz González – 2º DAW, CSC Jesuitas Logroño
+[GitHub](https://github.com/MK-1379) · [Portfolio](https://mk-1379.github.io)
