@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PeticioneController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CategoriaController;
@@ -13,8 +14,14 @@ Route::controller(CategoriaController::class)->group(function () {
 
 Route::controller(UserController::class)->group(function () {
     Route::get('users', 'index');
-    Route::post('register', 'register');
+    Route::post('user', 'register');
     Route::get('user/{user}', 'show');
+});
+
+Route::controller(PeticioneController::class)->group(function () {
+    Route::get('peticiones', 'index');
+    Route::post('peticion', 'store');
+    Route::get('peticion/{peticion}', 'show');
 });
 
 Route::get('/user', function (Request $request) {
