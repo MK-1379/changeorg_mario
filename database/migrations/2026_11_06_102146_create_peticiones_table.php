@@ -18,8 +18,8 @@ return new class extends Migration
             $table->text('destinatario');
             $table->integer('firmantes');
             $table->enum('estado', ['aceptada', 'pendiente']);
-            $table->foreignId('user_id');
-            $table->foreignId('categoria_id');
+            $table->foreignId('user_id')->constrained('users');
+            $table->foreignId('categoria_id')->constrained('categorias');
             $table->timestamps();
         });
     }
