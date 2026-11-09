@@ -6,7 +6,7 @@ use App\Models\Categoria;
 use App\Models\Peticione;
 use Dotenv\Validator;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 
 class PeticioneController extends Controller
 {
