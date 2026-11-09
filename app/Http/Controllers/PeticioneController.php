@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Categoria;
 use App\Models\Peticione;
-use Dotenv\Validator;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use App\Models\User;
 
@@ -40,13 +40,14 @@ class PeticioneController extends Controller
         $peticion->titulo = $request->input('titulo');
         $peticion->descripcion = $request->input('descripcion');
         $peticion->destinatario = $request->input('destinatario');
+        $peticion->firmantes = $request->input('firmantes');
+        $peticion->estado = $request->input('estado');
 
         $categoria = Categoria::findOrFail($input['categoria_id']);
 
         // Hardcodear el user creador
         $user=User::findOrFail(1);
         $peticion = new Peticione($input);
-        $peticion->firmantes = 0;
         $peticion->user()->associate($user);
         $peticion->categoria()->associate($categoria);
         $peticion->save();
