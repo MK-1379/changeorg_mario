@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Categoria;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -41,5 +42,11 @@ class UserController extends Controller
     public function show(User $user)
     {
         return response()->json(['message' => null, 'data' => $user], 200);
+    }
+
+    public function listarPeticiones ($id) {
+        $user = User::findOrFail($id);
+        $peticiones = $user->peticiones;
+        return response()->json(['message' => 'Peticiones creadas por el usuario', 'data' => $peticiones], 200);
     }
 }

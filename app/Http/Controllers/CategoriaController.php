@@ -39,4 +39,12 @@ class CategoriaController extends Controller
             'nombre' => 'required|string|max:255|unique:categorias,nombre',
         ]);
     }
+
+    public function listarPeticiones($id) {
+        $categoria = Categoria::findOrFail($id);
+        $peticiones = $categoria->peticiones;
+        $total = $peticiones->count();
+
+        return response()->json(['message' => 'Peticiones de la categoría', 'total' => $total, 'data' => $peticiones], 200);
+    }
 }

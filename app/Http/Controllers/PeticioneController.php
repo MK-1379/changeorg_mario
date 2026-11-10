@@ -54,4 +54,34 @@ class PeticioneController extends Controller
 
         return response() -> json(['message' => 'Peticion creada', 'data' => $peticion], 200);
     }
+
+    public function firmar(Request $request, $id, $user_id)
+    {
+        $peticion = Peticione::findOrFail($id);
+        $user = User::findOrFail($user_id);
+
+        $yaFirmada = $peticion->firmas()->where('user_id', $user->id)->exists();
+
+        if ($yaFirmada) {
+            return response()->json(['message' => 'Ya has firmado esta petición', 'data' => null], 409);
+        }
+
+        $peticion->firmas()->attach($user->id);
+        $peticion->firmantes = $peticion->firmantes + 1;
+        $peticion->save();
+
+        return response()->json(['message' => 'Petición firmada', 'data' => $peticion], 200);
+    }
+
+    public function verCategoria(Request $request, $id) {
+        $peticion = Peticione::findOrFail($id);
+        $categoria = $peticion->categoria;
+        return response() -> json(['message' => 'Categoria encontrada', 'data' => $categoria], 200);
+    }
+
+    public function verFirmantes(Request $request, $id) {
+        $peticion = Peticione::findOrFail($id);
+        $firmantes = $peticion->firmas;
+        return response()->json(['message' => 'Firmantes de la petición', 'data' => $firmantes], 200);
+    }
 }
