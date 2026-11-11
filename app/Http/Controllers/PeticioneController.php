@@ -84,4 +84,17 @@ class PeticioneController extends Controller
         $firmantes = $peticion->firmas;
         return response()->json(['message' => 'Firmantes de la petición', 'data' => $firmantes], 200);
     }
+
+    public function updateEstado(Request $request, $id) {
+        $peticion = Peticione::findOrFail($id);
+        $validator = Validator::make($request->all(), [
+            'estado' => 'required|in:aceptada,pendiente'
+        ]);
+        if($validator->fails()){
+            return response()->json($validator->messages(), 400);
+        }
+        $peticion->estado = $request->input('estado');
+        $peticion->save();
+        return response()->json(['message' => 'Peticion actualizada', 'data' => $peticion], 200);
+    }
 }
