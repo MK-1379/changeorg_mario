@@ -5,46 +5,39 @@ namespace App\Http\Controllers;
 use App\Models\Categoria;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+
 class CategoriaController extends Controller
 {
+    public function store(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'nombre' => 'required|string|max:255|unique:categorias,nombre',
+        ]);
+        if ($validator->fails()) {
+            return response()->json(['message' => 'Failed', 'data' => $validator->messages()], 422);
+        }
+
+        $categoria = Categoria::create($validator->validated());
+        return response()->json(['message' => 'Categoria creada', 'data' => $categoria], 200);
+    }
+
     public function index()
     {
         $categorias = Categoria::all();
-
-        return response()->json(['message' => null, 'data' => $categorias], 200);
+        return response()->json(['message' => 'Lista de categorias', 'data' => $categorias], 200);
     }
 
-
-    public function store(Request $request)
+    public function show($id)
     {
-        $categoria = new Categoria();
-        $nombre = $this->validateNombre($request);
-
-        if ($nombre->fails()) {
-            return response()->json($nombre->messages(), 422);
-        }
-
-        $categoria = Categoria::create($nombre->validate());
-        return response()->json(['message' => 'Categoria Created', 'data' => $categoria], 200);
+        $categoria = Categoria::findOrFail($id);
+        return response()->json(['message' => 'Categoria encontrada', 'data' => $categoria], 200);
     }
 
-    public function show(Categoria $categoria)
+    public function peticionesCategoria($id)
     {
-        return response()->json(['message' => null, 'data' => $categoria], 200);
-    }
-
-    private function validateNombre(Request $request)
-    {
-        return Validator::make($request->all(), [
-            'nombre' => 'required|string|max:255|unique:categorias,nombre',
-        ]);
-    }
-
-    public function listarPeticiones($id) {
         $categoria = Categoria::findOrFail($id);
         $peticiones = $categoria->peticiones;
         $total = $peticiones->count();
-
-        return response()->json(['message' => 'Peticiones de la categoría', 'total' => $total, 'data' => $peticiones], 200);
+        return response()->json(['message' => 'Peticiones de la categoria', 'data' => $peticiones, 'total' => $total], 200);
     }
 }

@@ -2,129 +2,115 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Categoria;
 use App\Models\Peticione;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class PeticioneController extends Controller
 {
+    public function store(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'titulo'       => 'required|string|max:255',
+            'descripcion'  => 'required|string',
+            'destinatario' => 'required|string|max:255',
+            'categoria_id' => 'required|integer|exists:categorias,id',
+        ]);
+        if ($validator->fails()) {
+            return response()->json(['message' => 'Failed', 'data' => $validator->messages()], 422);
+        }
+
+        // Hardcodear el user creador (hasta que haya login)
+        $user = User::findOrFail(1);
+
+        $peticion = new Peticione($validator->validated());
+        $peticion->firmantes = 0;
+        $peticion->estado = 'pendiente';
+        $peticion->user()->associate($user);
+        $peticion->save();
+        return response()->json(['message' => 'Peticion creada', 'data' => $peticion], 200);
+    }
+
     public function index()
     {
         $peticiones = Peticione::all();
-        return response() -> json($peticiones);
+        return response()->json(['message' => 'Lista de peticiones', 'data' => $peticiones], 200);
     }
 
-    public function show($id){
-        $peticion=Peticione::findOrFail($id);
-        return response() -> json($peticion, 200);
-    }
-
-    public function store(Request $request)
-    {
-        $peticion = new Peticione();
-        $validator = Validator::make($request->all(), [
-            'titulo' => 'required|string|max:255',
-            'descripcion' => 'required|string|max:255',
-            'destinatario' => 'required|string|max:255',
-            'firmantes' => 'required|string|max:255',
-            'estado' => 'required|in:aceptada,pendiente'
-        ]);
-        if ($validator->fails()) {
-            return response()->json($validator->messages(), 400);
-        }
-
-        $input = $request->all();
-
-        $peticion->titulo = $request->input('titulo');
-        $peticion->descripcion = $request->input('descripcion');
-        $peticion->destinatario = $request->input('destinatario');
-        $peticion->firmantes = $request->input('firmantes');
-        $peticion->estado = $request->input('estado');
-
-        $categoria = Categoria::findOrFail($input['categoria_id']);
-
-        // Hardcodear el user creador
-        $user=User::findOrFail(1);
-        $peticion = new Peticione($input);
-        $peticion->user()->associate($user);
-        $peticion->categoria()->associate($categoria);
-        $peticion->save();
-
-        return response() -> json(['message' => 'Peticion creada', 'data' => $peticion], 200);
-    }
-
-    public function firmar(Request $request, $id, $user_id)
+    public function show($id)
     {
         $peticion = Peticione::findOrFail($id);
-        $user = User::findOrFail($user_id);
-
-        $yaFirmada = $peticion->firmas()->where('user_id', $user->id)->exists();
-
-        if ($yaFirmada) {
-            return response()->json(['message' => 'Ya has firmado esta petición', 'data' => null], 409);
-        }
-
-        $peticion->firmas()->attach($user->id);
-        $peticion->firmantes = $peticion->firmantes + 1;
-        $peticion->save();
-
-        return response()->json(['message' => 'Petición firmada', 'data' => $peticion], 200);
+        return response()->json(['message' => 'Peticion encontrada', 'data' => $peticion], 200);
     }
 
-    public function verCategoria(Request $request, $id) {
+    public function categoriaPeticion($id)
+    {
         $peticion = Peticione::findOrFail($id);
         $categoria = $peticion->categoria;
-        return response() -> json(['message' => 'Categoria encontrada', 'data' => $categoria], 200);
+        return response()->json(['message' => 'Categoria de la peticion', 'data' => $categoria], 200);
     }
 
-    public function verFirmantes(Request $request, $id) {
+    public function firmantesPeticion($id)
+    {
         $peticion = Peticione::findOrFail($id);
         $firmantes = $peticion->firmas;
-        return response()->json(['message' => 'Firmantes de la petición', 'data' => $firmantes], 200);
+        return response()->json(['message' => 'Firmantes de la peticion', 'data' => $firmantes], 200);
     }
 
-    public function updateEstado(Request $request, $id) {
-        $peticion = Peticione::findOrFail($id);
-        $validator = Validator::make($request->all(), [
-            'estado' => 'required|in:aceptada,pendiente'
-        ]);
-        if($validator->fails()){
-            return response()->json($validator->messages(), 400);
+    public function firmar(User $user, Peticione $peticione)
+    {
+        $yaFirmada = $peticione->firmas()->where('user_id', $user->id)->exists();
+        if ($yaFirmada) {
+            return response()->json(['message' => 'El usuario ya ha firmado esta peticion', 'data' => null], 409);
         }
-        $peticion->estado = $request->input('estado');
-        $peticion->save();
-        return response()->json(['message' => 'Peticion actualizada', 'data' => $peticion], 200);
-    }
-    public function update(Request $request, $id) {
-        $peticion = Peticione::findOrFail($id);
 
+        $peticione->firmas()->attach($user->id);
+        $peticione->firmantes = $peticione->firmantes + 1;
+        $peticione->save();
+        return response()->json(['message' => 'Peticion firmada', 'data' => $peticione], 200);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $peticion = Peticione::findOrFail($id);
         $validator = Validator::make($request->all(), [
             'titulo'       => 'sometimes|required|string|max:255',
             'descripcion'  => 'sometimes|required|string',
             'destinatario' => 'sometimes|required|string|max:255',
             'categoria_id' => 'sometimes|required|integer|exists:categorias,id',
         ]);
-
         if ($validator->fails()) {
-            return response()->json(['message' => 'Error actualizando los datos', 'data' => $validator->messages()], 400);
+            return response()->json(['message' => 'Failed', 'data' => $validator->messages()], 422);
         }
 
         $peticion->update($validator->validated());
-
-        return response()->json(['message' => 'Datos actualizados', 'data' => $peticion], 200);
+        return response()->json(['message' => 'Peticion actualizada', 'data' => $peticion], 200);
     }
 
-    public function destroy($id) {
+    public function cambiarEstado(Request $request, $id)
+    {
         $peticion = Peticione::findOrFail($id);
+        $validator = Validator::make($request->all(), [
+            'estado' => 'required|in:aceptada,pendiente',
+        ]);
+        if ($validator->fails()) {
+            return response()->json(['message' => 'Failed', 'data' => $validator->messages()], 422);
+        }
 
-        if ($peticion->firmantes>0) { // O con $peticion->firmas()->exists()
-            return response()->json(['message' => 'No se puede borrar una petición que ya tiene firmas', 'data' => null], 409);
+        $peticion->estado = $request->input('estado');
+        $peticion->save();
+        return response()->json(['message' => 'Estado de la peticion actualizado', 'data' => $peticion], 200);
+    }
+
+    public function destroy($id)
+    {
+        $peticion = Peticione::findOrFail($id);
+        if ($peticion->firmas()->exists()) {
+            return response()->json(['message' => 'No se puede borrar una peticion que tiene firmas', 'data' => null], 409);
         }
 
         $peticion->delete();
-
-        return response()->json(['message' => 'Petición eliminada', 'data' => $peticion], 200);
+        return response()->json(['message' => 'Peticion eliminada', 'data' => $peticion], 200);
     }
 }
