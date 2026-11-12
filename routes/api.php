@@ -29,6 +29,7 @@ Route::controller(PeticioneController::class)->group(function () {
     Route::get('peticiones/{id}/firmantes', 'verFirmantes');
     Route::put('peticion/{id}/estado', 'updateEstado');
     Route::put('peticion/{id}', 'update');
+    Route::delete('peticion/{id}', 'destroy');
 });
 
 Route::get('/user', function (Request $request) {

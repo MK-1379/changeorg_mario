@@ -1,0 +1,384 @@
+type: collection.insomnia.rest/5.0
+schema_version: "5.1"
+name: Change_Mario
+meta:
+  id: wrk_9b232a89f7584e16b1cdc2838c78ba51
+  created: 1793961826231
+  modified: 1793962527690
+  description: ""
+collection:
+  - url: http://localhost:8000/api/categoria
+    name: CrearCategoria
+    meta:
+      id: req_3c09cba813644d19a0bf06c21a1f7249
+      created: 1793961830718
+      modified: 1794224567558
+      isPrivate: false
+      description: ""
+      sortKey: -1793961830718
+    method: POST
+    body:
+      mimeType: multipart/form-data
+      params:
+        - name: nombre
+          value: Salud
+          description: ""
+          disabled: false
+    headers:
+      - name: Content-Type
+        value: multipart/form-data
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8000/api/categorias
+    name: VerCategorias
+    meta:
+      id: req_81180e6a93f84f2a96459b3f3f9ba3ba
+      created: 1793962654718
+      modified: 1793962815342
+      isPrivate: false
+      description: ""
+      sortKey: -1793962654718
+    method: GET
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8000/api/categoria/1
+    name: VerCategoria
+    meta:
+      id: req_9fd13ff821024003a6db721f702b98cf
+      created: 1793962703932
+      modified: 1794223646826
+      isPrivate: false
+      description: ""
+      sortKey: -1793962703932
+    method: GET
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8000/api/user
+    name: RegistrarUser
+    meta:
+      id: req_0159b4306aa3423db889678c24df05fb
+      created: 1794221868137
+      modified: 1794298680698
+      isPrivate: false
+      description: ""
+      sortKey: -1794221868137
+    method: POST
+    body:
+      mimeType: multipart/form-data
+      params:
+        - name: name
+          value: Pepe
+          description: ""
+          disabled: false
+        - name: email
+          value: Pepe@gmail.com
+          description: ""
+          disabled: false
+        - name: password
+          value: "12345678"
+          description: ""
+          disabled: false
+        - name: c_password
+          value: "12345678"
+          description: ""
+          disabled: false
+    headers:
+      - name: Content-Type
+        value: multipart/form-data
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8000/api/users
+    name: IndexarUsers
+    meta:
+      id: req_62a59c8b155f4797946dc3a8249d9e7f
+      created: 1794223327830
+      modified: 1794223402757
+      isPrivate: false
+      description: ""
+      sortKey: -1794223327830
+    method: GET
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8000/api/user/2
+    name: VerUser
+    meta:
+      id: req_12134cb21dbf42308040a46c66638e70
+      created: 1794223394284
+      modified: 1794223445301
+      isPrivate: false
+      description: ""
+      sortKey: -1794223394284
+    method: GET
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8000/api/peticion
+    name: CrearPeticion
+    meta:
+      id: req_e319bb98e2e44f898246d4aead245af7
+      created: 1794223424330
+      modified: 1794471301645
+      isPrivate: false
+      description: ""
+      sortKey: -1794223424330
+    method: POST
+    body:
+      mimeType: multipart/form-data
+      params:
+        - name: titulo
+          value: Reducir las listas de espera en los centros de salud de La Rioja
+          description: ""
+          disabled: false
+        - name: descripcion
+          value: Conseguir cita con el médico de cabecera puede tardar más de una semana.
+            Pedimos contratar más personal sanitario y ampliar el horario de
+            tarde para que la atención primaria sea rápida y accesible para
+            todos.
+          description: ""
+          disabled: false
+        - name: destinatario
+          value: Consejería de Salud del Gobierno de La Rioja
+          description: ""
+          disabled: false
+        - name: firmantes
+          value: "0"
+          description: ""
+          disabled: false
+        - name: estado
+          value: pendiente
+          description: ""
+          disabled: false
+        - name: categoria_id
+          value: "1"
+          description: ""
+          disabled: false
+    headers:
+      - name: Content-Type
+        value: multipart/form-data
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8000/api/peticiones/firmar/1/user/2
+    name: FirmarPeticion
+    meta:
+      id: req_52dd7dd4b6994505a7c243380aa069e9
+      created: 1794296566274
+      modified: 1794298689937
+      isPrivate: false
+      description: ""
+      sortKey: -1794296566274
+    method: POST
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8000/api/peticiones/1/categoria
+    name: VerPeticion
+    meta:
+      id: req_0269eff18d884c58b2387b87d95141a7
+      created: 1794298682684
+      modified: 1794385291301
+      isPrivate: false
+      description: ""
+      sortKey: -1794298682684
+    method: GET
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8000/api/peticiones/1/firmantes
+    name: VerFirmantes
+    meta:
+      id: req_ffb235cee70942c0807b684ae5ecbb37
+      created: 1794298766973
+      modified: 1794299802328
+      isPrivate: false
+      description: ""
+      sortKey: -1794298766973
+    method: GET
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8000/api/categoria/1/peticiones
+    name: ListarPeticionesCategoria
+    meta:
+      id: req_7ed74ab9f0af4507a0860d3b2ec04b49
+      created: 1794299741604
+      modified: 1794385283259
+      isPrivate: false
+      description: ""
+      sortKey: -1794299741604
+    method: GET
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8000/api/user/1/peticiones
+    name: ListarPeticionesUser
+    meta:
+      id: req_e5e7c83435d04d1987678e04f498db49
+      created: 1794299851619
+      modified: 1794386648889
+      isPrivate: false
+      description: ""
+      sortKey: -1794299851619
+    method: GET
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8000/api/peticion/1/estado
+    name: UpdateEstadoPeticion
+    meta:
+      id: req_c5664a2ccc224f9fb76c79d6050ef040
+      created: 1794385231443
+      modified: 1794469175025
+      isPrivate: false
+      description: ""
+      sortKey: -1794385231443
+    method: PUT
+    body:
+      mimeType: application/json
+      text: |2-
+           {
+               "estado": "aceptada"
+           }
+    headers:
+      - name: Content-Type
+        value: application/json
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8000/api/peticiones
+    name: VerPeticiones
+    meta:
+      id: req_f228ee341f144546bea668b068464f31
+      created: 1794386641661
+      modified: 1794472325123
+      isPrivate: false
+      description: ""
+      sortKey: -1794386641661
+    method: GET
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:8000/api/peticion/1
+    name: UpdatePeticion
+    meta:
+      id: req_30fcc887e73c46b28471b764228cab10
+      created: 1794469164218
+      modified: 1794470490657
+      isPrivate: false
+      description: ""
+      sortKey: -1794469164218
+    method: PUT
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: ""
+    name: EliminarPeticion
+    meta:
+      id: req_404874f6aa3c4d06aa4ae0c236f87142
+      created: 1794470491388
+      modified: 1794470579451
+      isPrivate: false
+      description: ""
+      sortKey: -1794470491388
+    method: DELETE
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+cookieJar:
+  name: Default Jar
+  meta:
+    id: jar_0147e2a72328a21674b3c3b9e5784b690567c990
+    created: 1793961826234
+    modified: 1793961826234
+environments:
+  name: Base Environment
+  meta:
+    id: env_0147e2a72328a21674b3c3b9e5784b690567c990
+    created: 1793961826233
+    modified: 1793961826233
+    isPrivate: false

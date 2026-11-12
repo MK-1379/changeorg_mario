@@ -115,4 +115,16 @@ class PeticioneController extends Controller
 
         return response()->json(['message' => 'Datos actualizados', 'data' => $peticion], 200);
     }
+
+    public function destroy($id) {
+        $peticion = Peticione::findOrFail($id);
+
+        if ($peticion->firmantes>0) { // O con $peticion->firmas()->exists()
+            return response()->json(['message' => 'No se puede borrar una petición que ya tiene firmas', 'data' => null], 409);
+        }
+
+        $peticion->delete();
+
+        return response()->json(['message' => 'Petición eliminada', 'data' => $peticion], 200);
+    }
 }
