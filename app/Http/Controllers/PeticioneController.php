@@ -97,4 +97,22 @@ class PeticioneController extends Controller
         $peticion->save();
         return response()->json(['message' => 'Peticion actualizada', 'data' => $peticion], 200);
     }
+    public function update(Request $request, $id) {
+        $peticion = Peticione::findOrFail($id);
+
+        $validator = Validator::make($request->all(), [
+            'titulo'       => 'sometimes|required|string|max:255',
+            'descripcion'  => 'sometimes|required|string',
+            'destinatario' => 'sometimes|required|string|max:255',
+            'categoria_id' => 'sometimes|required|integer|exists:categorias,id',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['message' => 'Error actualizando los datos', 'data' => $validator->messages()], 400);
+        }
+
+        $peticion->update($validator->validated());
+
+        return response()->json(['message' => 'Datos actualizados', 'data' => $peticion], 200);
+    }
 }

@@ -9,7 +9,7 @@ class Peticione extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['titulo', 'descripcion', 'destinatario', 'firmantes', 'estado'];
+    protected $fillable = ['titulo', 'descripcion', 'destinatario', 'firmantes', 'estado', 'categoria_id'];
 
     public function categoria()
     {
