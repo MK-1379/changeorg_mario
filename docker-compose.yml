@@ -1,0 +1,23 @@
+services:
+
+  app:
+    build: .
+    image: mk1379/change-mario:v1.0
+    container_name: change-app
+    ports:
+      - "8000:80"
+    env_file: .env.docker
+    depends_on:
+      - db
+    restart: always
+
+  db:
+    image: mariadb:11
+    container_name: change-db
+    env_file: .env.docker
+    volumes:
+      - datos-change:/var/lib/mysql
+    restart: always
+
+volumes:
+  datos-change:
