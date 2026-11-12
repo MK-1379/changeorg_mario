@@ -58,17 +58,54 @@ class PeticioneController extends Controller
         return response()->json(['message' => 'Firmantes de la peticion', 'data' => $firmantes], 200);
     }
 
-    public function firmar(User $user, Peticione $peticione)
+    public function firmar(Request $request, User $user, Peticione $peticione)
     {
+        $validator = Validator::make($request->all(), [
+            'comentario' => 'nullable|string|max:255',
+        ]);
+        if ($validator->fails()) {
+            return response()->json(['message' => 'Failed', 'data' => $validator->messages()], 422);
+        }
+
         $yaFirmada = $peticione->firmas()->where('user_id', $user->id)->exists();
         if ($yaFirmada) {
             return response()->json(['message' => 'El usuario ya ha firmado esta peticion', 'data' => null], 409);
         }
 
-        $peticione->firmas()->attach($user->id);
+        $peticione->firmas()->attach($user->id, ['comentario' => $request->input('comentario')]);
         $peticione->firmantes = $peticione->firmantes + 1;
         $peticione->save();
         return response()->json(['message' => 'Peticion firmada', 'data' => $peticione], 200);
+    }
+
+    public function cambiarComentario(Request $request, User $user, Peticione $peticione)
+    {
+        $validator = Validator::make($request->all(), [
+            'comentario' => 'required|string|max:255',
+        ]);
+        if ($validator->fails()) {
+            return response()->json(['message' => 'Failed', 'data' => $validator->messages()], 422);
+        }
+
+        if (!$peticione->firmas()->where('user_id', $user->id)->exists()) {
+            return response()->json(['message' => 'El usuario no ha firmado esta peticion', 'data' => null], 404);
+        }
+
+        $peticione->firmas()->updateExistingPivot($user->id, ['comentario' => $request->input('comentario')]);
+        $firma = $peticione->firmas()->where('user_id', $user->id)->first();
+        return response()->json(['message' => 'Comentario actualizado', 'data' => $firma], 200);
+    }
+
+    public function quitarFirma(User $user, Peticione $peticione)
+    {
+        if (!$peticione->firmas()->where('user_id', $user->id)->exists()) {
+            return response()->json(['message' => 'El usuario no ha firmado esta peticion', 'data' => null], 404);
+        }
+
+        $peticione->firmas()->detach($user->id);
+        $peticione->firmantes = $peticione->firmantes - 1;
+        $peticione->save();
+        return response()->json(['message' => 'Firma eliminada', 'data' => $peticione], 200);
     }
 
     public function update(Request $request, $id)

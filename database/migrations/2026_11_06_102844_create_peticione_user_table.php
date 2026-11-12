@@ -15,6 +15,7 @@ return new class extends Migration
             $table->primary(['user_id', 'peticione_id']);
             $table->bigInteger('user_id')->unsigned();
             $table->bigInteger('peticione_id')->unsigned();
+            $table->string('comentario')->nullable();
             $table->timestamps();
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('peticione_id')->references('id')->on('peticiones');

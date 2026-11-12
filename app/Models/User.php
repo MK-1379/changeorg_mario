@@ -53,6 +53,6 @@ class User extends Authenticatable
 
     public function firmas()
     {
-        return $this->belongsToMany(Peticione::class)->withTimestamps();
+        return $this->belongsToMany(Peticione::class)->withPivot('comentario')->withTimestamps();
     }
 }

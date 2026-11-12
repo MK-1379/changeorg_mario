@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CategoriaController;
+use App\Http\Controllers\FileController;
 use App\Http\Controllers\PeticioneController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -17,6 +18,7 @@ Route::controller(UserController::class)->group(function () {
     Route::post('user', 'store');
     Route::get('user/{id}', 'show');
     Route::get('user/{id}/peticiones', 'peticionesUser');
+    Route::get('user/{id}/firmas', 'firmasUser');
 });
 
 Route::controller(PeticioneController::class)->group(function () {
@@ -26,7 +28,15 @@ Route::controller(PeticioneController::class)->group(function () {
     Route::get('peticion/{id}/categoria', 'categoriaPeticion');
     Route::get('peticion/{id}/firmantes', 'firmantesPeticion');
     Route::post('user/{user}/peticion/{peticione}/firmar', 'firmar');
+    Route::put('user/{user}/peticion/{peticione}/comentario', 'cambiarComentario');
+    Route::delete('user/{user}/peticion/{peticione}/firmar', 'quitarFirma');
     Route::put('peticion/{id}', 'update');
     Route::put('peticion/{id}/estado', 'cambiarEstado');
     Route::delete('peticion/{id}', 'destroy');
+});
+
+Route::controller(FileController::class)->group(function () {
+    Route::post('peticion/{id}/file', 'store');
+    Route::get('peticion/{id}/files', 'filesPeticion');
+    Route::get('file/{id}/peticion', 'peticionFile');
 });

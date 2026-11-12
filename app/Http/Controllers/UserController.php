@@ -47,4 +47,11 @@ class UserController extends Controller
         $peticiones = $user->peticiones;
         return response()->json(['message' => 'Peticiones creadas por el usuario', 'data' => $peticiones], 200);
     }
+
+    public function firmasUser($id)
+    {
+        $user = User::findOrFail($id);
+        $firmas = $user->firmas;
+        return response()->json(['message' => 'Peticiones firmadas por el usuario', 'data' => $firmas], 200);
+    }
 }
