@@ -1,0 +1,498 @@
+:root {
+  --chg-bg: #1c1e23;
+  --chg-surface: #2a2d34;
+  --chg-input: #3a3e49;
+  --chg-border: #575b68;
+  --chg-muted: #cbcfda;
+  --chg-red: #e8453c;
+  --chg-yellow: #ffdb00;
+  --chg-blue: #0038bc;
+}
+
+body {
+  background-color: var(--chg-bg);
+  color: #fff;
+  font-family: "Commissioner", Arial, sans-serif;
+}
+
+a {
+  color: #fff;
+}
+
+h1, h2, h3 {
+  font-weight: 700;
+}
+
+.text-muted-chg {
+  color: var(--chg-muted);
+}
+
+.text-red {
+  color: var(--chg-red);
+}
+
+.red-bar {
+  display: block;
+  width: 48px;
+  height: 6px;
+  background-color: var(--chg-red);
+}
+
+.navbar-chg {
+  background-color: var(--chg-bg);
+  border-bottom: 1px solid var(--chg-border);
+}
+
+.brand-logo {
+  color: var(--chg-red);
+  font-weight: 700;
+  font-size: 1.35rem;
+  text-decoration: none;
+}
+
+.navbar-chg .nav-link {
+  color: #fff;
+  font-weight: 600;
+}
+
+.navbar-chg .nav-link:hover,
+.navbar-chg .nav-link.active {
+  color: var(--chg-muted);
+}
+
+.btn-chg-primary {
+  background-color: var(--chg-yellow);
+  color: #3a3e49;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 24px;
+}
+
+.btn-chg-primary:hover {
+  background-color: #ffe600;
+  color: #3a3e49;
+}
+
+.btn-chg-outline {
+  background-color: transparent;
+  color: #fff;
+  font-weight: 600;
+  border: 1px solid var(--chg-muted);
+  border-radius: 8px;
+  padding: 12px 20px;
+}
+
+.btn-chg-outline:hover {
+  background-color: #33363e;
+  color: #fff;
+  border-color: #fff;
+}
+
+.btn-round {
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border-radius: 50%;
+}
+
+.chip {
+  display: inline-block;
+  padding: 6px 14px;
+  border: 1px solid var(--chg-muted);
+  border-radius: 8px;
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.chip:hover {
+  background-color: #33363e;
+  color: #fff;
+}
+
+.chip-blue {
+  border-color: #4771ff;
+}
+
+.btn-check:checked + .chip {
+  background-color: #fff;
+  color: var(--chg-bg);
+}
+
+.card-chg {
+  background-color: #33363e;
+  border: 1px solid var(--chg-border);
+  border-radius: 12px;
+  color: #fff;
+  overflow: hidden;
+}
+
+.card-chg .card-img-top {
+  height: 180px;
+  object-fit: cover;
+}
+
+.card-chg .card-title {
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.form-control-chg {
+  background-color: var(--chg-input);
+  border: 1px solid var(--chg-border);
+  color: #fff;
+}
+
+.form-control-chg::placeholder {
+  color: #9da2b0;
+}
+
+.form-control-chg:focus {
+  background-color: var(--chg-input);
+  border-color: #fff;
+  color: #fff;
+}
+
+.form-check-input:checked {
+  background-color: var(--chg-yellow);
+  border-color: var(--chg-yellow);
+}
+
+.footer-chg {
+  border-top: 1px solid var(--chg-border);
+  font-size: 0.9rem;
+}
+
+.footer-chg h2 {
+  font-size: 1rem;
+}
+
+.footer-chg a {
+  color: var(--chg-muted);
+  text-decoration: none;
+}
+
+.footer-chg a:hover {
+  color: #fff;
+  text-decoration: underline;
+}
+
+.hero {
+  background: linear-gradient(100deg, #233042, #1c1e23, #3a3a22);
+}
+
+.hero-title {
+  font-size: 2.6rem;
+  line-height: 1.05;
+}
+
+.hero-textarea {
+  position: relative;
+  max-width: 600px;
+}
+
+.hero-textarea textarea {
+  height: 180px;
+  resize: none;
+  padding: 20px 20px 64px;
+  background-color: var(--chg-bg);
+}
+
+.hero-textarea .btn-round {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+}
+
+.story-scroller {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+}
+
+.story {
+  flex: 0 0 100%;
+  scroll-snap-align: center;
+  text-align: center;
+}
+
+.story img {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+}
+
+.story-badge {
+  display: inline-block;
+  margin-top: -14px;
+  position: relative;
+  padding: 4px 12px;
+  border-radius: 20px;
+  background-color: var(--chg-input);
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+
+.story-badge .dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--chg-red);
+}
+
+.step-number {
+  display: inline-block;
+  width: 64px;
+  height: 64px;
+  line-height: 64px;
+  border-radius: 50%;
+  background-color: var(--chg-blue);
+  font-weight: 700;
+  position: relative;
+}
+
+.steps {
+  position: relative;
+}
+
+.steps-bar {
+  position: absolute;
+  top: 31px;
+  left: 16.66%;
+  right: 16.66%;
+  height: 2px;
+  background-color: var(--chg-blue);
+}
+
+.mission {
+  background-color: var(--chg-surface);
+  border-radius: 12px;
+}
+
+.search-hero h1 {
+  font-size: 2.2rem;
+}
+
+.search-box {
+  position: relative;
+}
+
+.search-box .bi-search {
+  position: absolute;
+  left: 14px;
+  top: 9px;
+}
+
+.search-box input {
+  padding-left: 40px;
+}
+
+.explore-card {
+  display: block;
+  background-color: #26292f;
+  border-radius: 12px;
+  color: #fff;
+  text-decoration: none;
+}
+
+.explore-card:hover {
+  background-color: #33363e;
+  color: #fff;
+}
+
+.explore-card .bi {
+  font-size: 2rem;
+  color: var(--chg-yellow);
+}
+
+.card-sponsor {
+  font-size: 0.8rem;
+  color: var(--chg-muted);
+  text-decoration: underline;
+}
+
+.petition-hero {
+  min-height: 260px;
+  background-image: linear-gradient(to top, rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.2)),
+                    url("../img/pet-carril-bici.svg");
+  background-size: cover;
+  background-position: center;
+}
+
+.petition-title {
+  font-size: 1.8rem;
+}
+
+.sign-card {
+  border: 1px solid var(--chg-border);
+  border-radius: 12px;
+}
+
+.sign-count {
+  font-size: 2.2rem;
+  font-weight: 700;
+}
+
+.opinion-card {
+  min-width: 280px;
+  background-color: var(--chg-blue);
+  border-radius: 12px;
+}
+
+.opinion-card blockquote {
+  font-family: Georgia, serif;
+  font-style: italic;
+}
+
+.update-item {
+  background-color: #26292f;
+  border: 1px solid var(--chg-border);
+  border-radius: 8px;
+}
+
+.update-icon {
+  display: inline-block;
+  width: 36px;
+  height: 36px;
+  line-height: 36px;
+  text-align: center;
+  border-radius: 50%;
+  background-color: #e2efff;
+  color: var(--chg-blue);
+}
+
+.progress-chg {
+  height: 8px;
+  background-color: var(--chg-input);
+}
+
+.progress-chg .progress-bar {
+  background-color: #4771ff;
+}
+
+.mobile-sign-bar {
+  position: sticky;
+  bottom: 0;
+  background-color: var(--chg-bg);
+  border-top: 1px solid var(--chg-border);
+}
+
+.create-panel {
+  background-color: var(--chg-surface);
+  border-radius: 12px;
+}
+
+.create-title-block {
+  background-color: #000;
+}
+
+.title-input {
+  font-size: 1.6rem;
+  font-weight: 700;
+  height: 90px;
+  resize: none;
+  background-color: #000;
+}
+
+.title-input:focus {
+  background-color: #000;
+}
+
+.editor-toolbar {
+  background-color: #1e2b3d;
+  border: 1px solid var(--chg-border);
+  border-bottom: none;
+  border-radius: 8px 8px 0 0;
+}
+
+.editor-toolbar button {
+  color: #fff;
+  background: none;
+  border: none;
+}
+
+.editor-area {
+  height: 220px;
+  border-radius: 0 0 8px 8px;
+}
+
+.form-section-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.image-drop {
+  border: 2px dashed var(--chg-border);
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+.scope-option {
+  border: 1px solid var(--chg-border);
+  border-radius: 12px;
+  cursor: pointer;
+  height: 100%;
+}
+
+.scope-option .bi {
+  font-size: 1.6rem;
+}
+
+.btn-check:checked + .scope-option {
+  border: 2px solid var(--chg-yellow);
+}
+
+.create-bottom-bar {
+  position: sticky;
+  bottom: 0;
+  background-color: var(--chg-bg);
+  border-top: 1px solid var(--chg-border);
+}
+
+@media (min-width: 768px) {
+  .hero-title {
+    font-size: 4rem;
+  }
+
+  .search-hero h1 {
+    font-size: 3.2rem;
+  }
+
+  .petition-hero {
+    min-height: 340px;
+    border-radius: 12px;
+  }
+
+  .petition-title {
+    font-size: 2.4rem;
+  }
+
+  .story {
+    flex: 1;
+  }
+
+  .story img {
+    width: 160px;
+    height: 160px;
+  }
+}
+
+@media (min-width: 992px) {
+  .brand-logo {
+    font-size: 1.6rem;
+  }
+
+  .hero-title {
+    font-size: 5rem;
+  }
+
+  .sign-card-sticky {
+    position: sticky;
+    top: 80px;
+  }
+}

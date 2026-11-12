@@ -4,6 +4,12 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [\App\Http\Controllers\PagesController::class, 'home'])->name('home');
 
+Route::controller(\App\Http\Controllers\PagesController::class)->group(function () {
+    Route::get('/descubre', 'peticiones')->name('pages.peticiones');
+    Route::get('/peticion-ejemplo', 'peticion')->name('pages.peticion');
+    Route::get('/crear', 'crear')->name('pages.crear');
+});
+
 Route::get('/users/firmas', [\App\Http\Controllers\UserController::class, 'peticionesFirmadas'])->middleware('auth');
 
 Route::controller(\App\Http\Controllers\PeticioneController::class)->group(function () {
